@@ -6,8 +6,6 @@ import { User } from "../users/entities/user.entity";
 import { UserRole } from "src/common/enums/user-role.enum";
 import { UpdateTeamMemberDto } from "./dto/update-member.dto";
 
-
-
 @Injectable()
 export class MembersService {
     constructor(
@@ -16,14 +14,14 @@ export class MembersService {
     ) { }
 
     async createMember(dto: CreateTeamMemberDto): Promise<User> {
-        const existingUser = await this.usersService.findByEmail(dto.email);
+        const existingUser = await this.usersService.findOneByEmail(dto.email);
 
         if (existingUser) {
             throw new ConflictException('User with this email already exists');
         }
 
         if (dto.phoneNumber) {
-            const existingUserByPhone = await this.usersService.findByPhoneNumber(dto.phoneNumber);
+            const existingUserByPhone = await this.usersService.findOneByPhoneNumber(dto.phoneNumber);
             if (existingUserByPhone) {
                 throw new ConflictException('User with this phone number already exists');
             }
@@ -70,6 +68,4 @@ export class MembersService {
     async getActiveMembers(): Promise<User[]> {
         return this.membersRepository.findActiveMembers();
     }
-
-
 }

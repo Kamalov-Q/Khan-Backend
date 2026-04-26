@@ -5,6 +5,12 @@ import { ConfigService } from '@nestjs/config';
 import { UsersService } from '../../users/users.service';
 import { User } from '../../users/entities/user.entity';
 
+interface JwtPayload {
+    sub: string;
+    email: string;
+    role: string;
+}
+
 @Injectable()
 export class JwtStrategy extends PassportStrategy(Strategy) {
     constructor(
@@ -18,7 +24,7 @@ export class JwtStrategy extends PassportStrategy(Strategy) {
         });
     }
 
-    async validate(payload: any): Promise<User> {
+    async validate(payload: JwtPayload): Promise<User> {
         const user = await this.usersService.findById(payload.sub);
         return user;
     }

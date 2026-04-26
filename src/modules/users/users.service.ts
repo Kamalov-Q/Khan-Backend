@@ -48,8 +48,12 @@ export class UsersService {
         return user;
     }
 
+    async findOneByEmail(email: string): Promise<User | null> {
+        return this.usersRepository.findByEmail(email);
+    }
+
     async findByEmail(email: string): Promise<User> {
-        const user = await this.usersRepository.findOne({ where: { email } });
+        const user = await this.findOneByEmail(email);
 
         if (!user) {
             throw new NotFoundException('User not found');
@@ -58,8 +62,12 @@ export class UsersService {
         return user;
     }
 
+    async findOneByPhoneNumber(phoneNumber: string): Promise<User | null> {
+        return this.usersRepository.findByPhoneNumber(phoneNumber);
+    }
+
     async findByPhoneNumber(phoneNumber: string): Promise<User> {
-        const user = await this.usersRepository.findOne({ where: { phoneNumber } });
+        const user = await this.findOneByPhoneNumber(phoneNumber);
 
         if (!user) {
             throw new NotFoundException('User not found');
@@ -106,7 +114,6 @@ export class UsersService {
             skip: (page - 1) * limit,
             take: limit,
             order: { createdAt: 'DESC' },
-            relations: ['role']
         })
     }
 

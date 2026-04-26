@@ -5,6 +5,12 @@ import { UsersService } from '../users/users.service';
 import { LoginDto } from './dto/login.dto';
 import { AuthResponseDto } from './dto/auth-response.dto';
 
+interface JwtPayload {
+    sub: string;
+    email: string;
+    role: string;
+}
+
 @Injectable()
 export class AuthService {
     constructor(
@@ -30,7 +36,7 @@ export class AuthService {
 
         await this.usersService.updateLastLogin(user.id);
 
-        const payload = { sub: user.id, email: user.email, role: user.role };
+        const payload: JwtPayload = { sub: user.id, email: user.email, role: user.role };
         const accessToken = this.jwtService.sign(payload);
 
         return {
@@ -45,7 +51,7 @@ export class AuthService {
         };
     }
 
-    async validateToken(token: string): Promise<any> {
+    async validateToken(token: string): Promise<JwtPayload> {
         try {
             return this.jwtService.verify(token);
         } catch {

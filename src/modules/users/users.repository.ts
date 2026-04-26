@@ -1,7 +1,6 @@
 import { Injectable } from "@nestjs/common";
-import { Repository } from "typeorm";
+import { DataSource, Repository } from "typeorm";
 import { User } from "./entities/user.entity";
-import { DataSource } from "typeorm/browser";
 
 @Injectable()
 export class UsersRepository extends Repository<User> {

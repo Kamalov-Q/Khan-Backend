@@ -8,7 +8,7 @@ export const databaseConfig = (configService: ConfigService): TypeOrmModuleOptio
     username: configService.get("DATABASE_USERNAME"),
     password: configService.get("DATABASE_PASSWORD"),
     database: configService.get("DATABASE_NAME"),
-    // entities: [],
+    autoLoadEntities: true,
     synchronize: true,
     logging: true,
     ssl: configService.get("NODE_ENV") === 'production' ? { rejectUnauthorized: false } : false

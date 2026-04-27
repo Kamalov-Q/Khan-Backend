@@ -4,6 +4,7 @@ import { WeddingAssignmentsRepository } from "../wedding-assignments/wedding-ass
 import { MembersRepository } from "../members/members.repository";
 import { DashboardSummaryDto, TeamMemberStatsDto, WeddingChartDto } from "./dto/dashboard-response.dto";
 import Decimal from "decimal.js";
+import { Between } from "typeorm";
 
 @Injectable()
 export class DashboardService {
@@ -27,7 +28,7 @@ export class DashboardService {
 
         const monthWeddingQuery = await this.weddingsRepository.findAndCount({
             where: {
-                eventDate: `>='${monthStart}' AND eventDate <= '${monthEnd}'`,
+                eventDate: Between(monthStart, monthEnd),
             },
         });
 
@@ -36,7 +37,7 @@ export class DashboardService {
 
         const [allWeddings] = await this.weddingsRepository.findAndCount({
             where: {
-                eventDate: `>='${yearStart}' AND eventDate <= '${yearEnd}'`,
+                eventDate: Between(yearStart, yearEnd),
             },
         });
 
